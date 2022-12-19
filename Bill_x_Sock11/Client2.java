@@ -29,7 +29,6 @@ public class Client2 implements KeyListener
 	boolean backX = true;
     boolean backY = true;
 	int xplus; int yplus;
-	int ppx; int ppy;
 	int score1; int score2;
 	
 
@@ -78,18 +77,6 @@ public class Client2 implements KeyListener
 	public void setBackY(boolean b){
 		backY = b;
 	}
-    public int getPpx(){
-      return this.ppx ;
-    }
-    public int getPpy(){
-      return this.ppy ;
-    }
-    public void setPpx(int pp){
-      this.ppx = pp;
-    }
-    public void setPpy(int pp){
-      this.ppy = pp;
-    }	
     public int getXplus(){
 		return this.xplus ;
 	}
@@ -118,7 +105,6 @@ public class Client2 implements KeyListener
 	public Client2() throws UnknownHostException, IOException
 	{
 		this.xplus = 1; this.yplus = 1;
-		// x = (400/2)-10; y=(600/2)-10;
 		xrec = (400/2)-40;
 		yrec = 600-10;
 		xrec2 = (400/2)-40;
@@ -128,7 +114,6 @@ public class Client2 implements KeyListener
 		arret = false;
 	}
 
-	//keyPressed() method takes care of moving the zero according to the key pressed
 	@Override
 	public void keyPressed(KeyEvent e)
 	{ 
@@ -152,7 +137,7 @@ public class Client2 implements KeyListener
         }
 
 	}
-	//We don't need the other two methods
+	
 	@Override
 	public void keyReleased(KeyEvent e)
 	{}
@@ -161,7 +146,7 @@ public class Client2 implements KeyListener
 	{}
 	public static void main(String[] args) throws UnknownHostException, IOException
 	{
-		//Setting the frame and labels
+		
 
 		Wind wind = new Wind();
 		wind.setNom("Client");
@@ -181,11 +166,22 @@ public class Client2 implements KeyListener
 			try {
 
 				// System.out.println(c2.getXrec2()+"//"+c2.getYrec2()+"//"+c2.getXplus()+"//"+c2.getYplus());
-                writerChannel.write(c2.getXrec2()+"//"+c2.getYrec2()+"//"+c2.getXplus()+"//"+c2.getYplus()+"\n");
+                writerChannel.write(c2.getXrec2()+"//"+c2.getYrec2()+"//"+c2.getXplus()+"//"+c2.getYplus()+"//"+c2.getSign()+"\n");
             	writerChannel.flush();
+
+				if(c2.getSign().equals("close")){
+					c2.getSocket().close();
+					System.out.println("fin de connection");
+					break;
+				}
 
                 if((line = readerChannel.readLine()) != null){
                     String[] col = line.split("//");
+					if(col[6].equals("close")){
+						c2.getSocket().close();
+						System.out.println("fin de connection depuis autre client");
+						break;
+					}
                         System.out.println(col[2]+"||"+col[3]);
                         wind.getPan().setXrec1(Integer.parseInt(col[0]));
                         wind.getPan().setYrec1(Integer.parseInt(col[1]));
@@ -236,12 +232,7 @@ public class Client2 implements KeyListener
 					c2.setXplus(0); c2.setYplus(0);
 					c2.setBackX(true);
 					c2.setBackY(true);
-				}//else if(c2.getXrec2()>c2.getX()+10 && c2.getY() == 0+10 || c2.getX()+10>c2.getXrec2()+80 && c2.getY() == 0+10){
-				// 	c2.setX(c2.getXrec2()+40); c2.setY(c2.getYrec2()+10);
-				// 	c2.setXplus(0); c2.setYplus(0);
-				// 	c2.setBackX(false);
-				// 	c2.setBackY(false);					
-				// }
+				}
 				if(c2.getX()+10 < c2.getXrec2() && c2.getY() == c2.getYrec2()+10){
 					c2.setX(c2.getXrec2()+40); c2.setY(c2.getYrec2()+10);
 						c2.setBackX(false);
@@ -271,6 +262,5 @@ public class Client2 implements KeyListener
         	}
 		}
 		    
-		//Creating and adding the key listener
 	}
 }
