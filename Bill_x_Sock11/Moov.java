@@ -124,7 +124,6 @@ public class Moov implements KeyListener
 		arret = false;
 	}
 
-	//keyPressed() method takes care of moving the zero according to the key pressed
 	@Override
 	public void keyPressed(KeyEvent e)
 	{ 
@@ -148,7 +147,7 @@ public class Moov implements KeyListener
         }
 
 	}
-	//We don't need the other two methods
+	
 	@Override
 	public void keyReleased(KeyEvent e)
 	{}
@@ -157,7 +156,6 @@ public class Moov implements KeyListener
 	{}
 	public static void main(String[] args) throws UnknownHostException, IOException
 	{
-		//Setting the frame and labels
 
 		Wind wind = new Wind();
 		wind.setNom("Client");
@@ -177,11 +175,22 @@ public class Moov implements KeyListener
 			try {
 
 				System.out.println(k.getX()+"//"+k.getY());
-                writerChannel.write(k.getXrec()+"//"+k.getYrec()+"//"+k.getX()+"//"+k.getY()+"//"+k.getScore1()+"//"+k.getScore2()+"\n");
+                writerChannel.write(k.getXrec()+"//"+k.getYrec()+"//"+k.getX()+"//"+k.getY()+"//"+k.getScore1()+"//"+k.getScore2()+"//"+k.getSign()+"\n");
             	writerChannel.flush();
+
+				if(k.getSign().equals("close")){
+					k.getSocket().close();
+					System.out.println("fin de connection");
+					break;
+				}
 
                 if((line = readerChannel.readLine()) != null){
                     String[] col = line.split("//");
+						if(col[4].equals("close")){
+							k.getSocket().close();
+							System.out.println("fin de connection depuis autre client");
+							break;
+						}
 						System.out.println(col[0]+"||"+col[1]);
 						k.setXrec2(Integer.parseInt(col[0]));
 						k.setYrec2(Integer.parseInt(col[1]));
@@ -230,10 +239,7 @@ public class Moov implements KeyListener
 					k.setX(k.getXrec()+40); k.setY(k.getYrec()-20);
 					k.setXplus(0); k.setYplus(0);
 					k.setScore2(k.getScore2()+1);
-				}//else if(k.getXrec2()>k.getX()+10 && k.getY() == 0+10 || k.getX()+10>k.getXrec2()+80 && k.getY() == 0+10){
-				// 	k.setX(k.getXrec2()+40); k.setY(k.getYrec2()+10);
-				// 	k.setXplus(0); k.setYplus(0);
-				// }
+				}
 				if(k.getX()+10 < k.getXrec2() && k.getY() < k.getYrec2()+10){
 					k.setX(k.getXrec2()+40); k.setY(k.getYrec2()+10);
 					k.setBackX(false);
@@ -259,6 +265,6 @@ public class Moov implements KeyListener
         	}
 		}
 		    
-		//Creating and adding the key listener
+		
 	}
 }
