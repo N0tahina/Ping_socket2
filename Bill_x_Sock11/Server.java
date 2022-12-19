@@ -56,7 +56,9 @@ public class Server implements KeyListener
                             e.printStackTrace();
                             System.out.println(e.getMessage());
                         }
-                        if(col[2].equals("close")){
+                        if(col[4].equals("close")){
+                            writerChannel.write(line2+"\n");
+                            writerChannel.flush();
                             socket.close();
                         }
                     }
@@ -71,7 +73,9 @@ public class Server implements KeyListener
                             e.printStackTrace();
                             System.out.println(e.getMessage());
                         }
-                        if(col[2].equals("close")){
+                        if(col[4].equals("close")){
+                            writerChannel2.write(line+"\n");
+                            writerChannel2.flush();
                             socket2.close();
                         }
                     }
