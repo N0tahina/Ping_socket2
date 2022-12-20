@@ -12,17 +12,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 
-public class Server implements KeyListener
+public class Server 
 {
-    @Override
-	public void keyPressed(KeyEvent e)
-	{} 
-	@Override
-	public void keyReleased(KeyEvent e)
-	{}
-	@Override
-	public void keyTyped(KeyEvent e)
-	{}
     public static void main(String[] args) throws Exception
     {
         try{
